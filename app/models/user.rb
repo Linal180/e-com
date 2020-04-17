@@ -6,4 +6,18 @@ class User < ApplicationRecord
 
 
   has_many :items
+  has_many :orders
+  has_many :items, through: :orders
+
+
+
+  def full_name
+    return "#{first_name} #{last_name}" if first_name || last_name
+    "Anonymous"
+  end
+
+
+
+
+
 end

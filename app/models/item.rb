@@ -1,9 +1,15 @@
 class Item < ApplicationRecord
 
   belongs_to :user
+  has_many :orders
+  has_many :user, through: :orders
   mount_uploader :picture, PictureUploader
   validates :name, :picture, presence: true
   validate :picture_size
+  
+  
+
+  
   
   private
 

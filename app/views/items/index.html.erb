@@ -1,14 +1,27 @@
 <h1>Items Listing</h1>
 
 <% @items.each do |item| %>
-    <div class="course">
-        <div class="card" style="width: 28rem;">
+    <div class="container">
+
+    <div class="card-deck">
+    <div class="row">
+        <div class="col">
+        
+        <div class="card item">
+            <%= image_tag item.picture.url, size: '276x180', class: "card-img-top" %>
             <div class="card-body">
                 <h5 class="card-title"><%= item.name %></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><%= item.price =%></h6>
-                <p><%= image_tag item.picture.url, size: '100x100' %></p>
-                <%= link_to 'View Profile', '#', class: "card-link" %>
+                <h8 class="card-title">$ <%= item.price %></h8>
             </div>
+            <div class="card-footer">
+                <small class="text-muted"><%= item.updated_at %></small>
+            </div>
+            <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', method: :post %>
         </div>
-    </div>
+        </div>
+        </div>
+    
+  </div>
+  </div>
+  
 <% end %>
