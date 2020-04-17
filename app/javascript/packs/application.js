@@ -16,4 +16,27 @@ require("channels")
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+
 import "bootstrap"
+import JQuery from 'jquery';
+window.$ = window.JQuery = JQuery;
+
+$(document).on('turbolinks:load',(function() {
+	"use strict";
+
+	var fullHeight = function() {
+
+		$('.js-fullheight').css('height', $(window).height());
+		$(window).resize(function(){
+			alert('2')
+			$('.js-fullheight').css('height', $(window).height());
+		});
+
+	};
+
+	fullHeight();
+	$('#sidebarCollapse').on('click', function () {
+		$('#sidebar').toggleClass('active');
+  });
+
+}))
