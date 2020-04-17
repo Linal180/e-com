@@ -1,0 +1,14 @@
+<h1>Items Listing</h1>
+
+<% @items.each do |item| %>
+    <div class="course">
+        <div class="card" style="width: 28rem;">
+            <div class="card-body">
+                <h5 class="card-title"><%= item.name %></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><%= item.price =%></h6>
+                <p><%= image_tag item.picture.url, size: '100x100' %></p>
+                <%= link_to 'View Profile', '#', class: "card-link" %>
+            </div>
+        </div>
+    </div>
+<% end %>

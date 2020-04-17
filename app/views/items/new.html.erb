@@ -1,0 +1,54 @@
+
+<div class="conatainer">
+<div class="row">
+  <div class="col-9">
+    <%= form_for @item, :html => { multiport: true, :class => "form-horizontal "} do |form| %>
+      <% if @item.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+          <ul>
+            <% @item.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, autofocus: true, autocomplete: 'name', class: 'form-control' %>
+      </div>
+
+
+      <div class="form-group">
+        <%= form.label :price %>
+        <%= form.text_field :price, autofocus: true, autocomplete: 'price', class: 'form-control' %>
+    </div>
+
+
+      <div class="form-group">
+        <%= form.label :picture %>
+        <%= form.file_field :picture, accept: 'image/jpeg , image/gif, image/png', autofocus: true, class: 'form-control' %>
+      </div>
+      
+
+
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    <% end %>
+  </div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+  $('#bug_picture').bind('change', function(){
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if(size_in_megabytes > 5){
+      alert('Maximum file size is 5MB')
+    }
+  });
+
+</script>
