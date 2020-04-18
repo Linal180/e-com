@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
 
+
+    before_action :require_same_user, only: [:destroy]
     def index
         @orders = Order.all
     end
@@ -23,4 +25,17 @@ class OrdersController < ApplicationController
         end
         redirect_to items_path
     end
+
+
+
+    private
+
+    def require_same_user
+        order = Order.where(item_id: params[:id], user_id: current_user.id).first
+        if current_user != order.user
+          flash[:notice] = "This action is forbidden for you!"
+          redirect_to root_path
+        end
+    end
+
 end

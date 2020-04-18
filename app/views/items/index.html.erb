@@ -14,7 +14,7 @@
                 <h8 class="card-title">$ <%= item.price %></h8>
             </div>
             <div class="card-footer">
-                <small class="text-muted"><%= item.updated_at %> 
+                <small class="text-muted"><%= item.updated_at.to_date.strftime('%a, %e %b %y') %> 
                 <% if item.already_liked?(item, current_user)%>
                     <%= link_to '<i class="fa fa-thumbs-down "></i>'.html_safe, remove_like_path(id: item.id), class: "like", method: :delete %></small>
                 <% else %>

@@ -14,5 +14,12 @@ class Order < ApplicationRecord
         return "#{@item.price}"
     end
 
+    def get_user_name(order_id)
+        @order = Order.find(order_id)
+        @user = User.find(@order.user_id)
+        return "#{@user.first_name} #{@user.last_name}"
+    end
+
+    
     
 end
