@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
 
     def index
-        @order = Order.all
+        @orders = Order.all
     end
 
     def create 
@@ -10,6 +10,16 @@ class OrdersController < ApplicationController
             flash[:notice] = 'Added to cart successfully'
         else
             flash[:alert] = 'Somthing went wrong' 
+        end
+        redirect_to items_path
+    end
+
+    def destroy
+        order = Order.where(item_id: params[:id], user_id: current_user.id).first
+        if order && order.destroy
+            flash[:notice] = "Successfully removed from cart"
+        else
+            flash[:alert] = 'Something went wrong'
         end
         redirect_to items_path
     end

@@ -18,7 +18,7 @@
                 <%= link_to "Home", items_path, class:'nav-link'  %>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <%= link_to 'Orders', orders_path, class: "nav-link" %>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,7 +34,7 @@
             </ul>
             <ul class="navbar-nav ml-auto">
             <li class='nav-item'>
-                <%= current_user.full_name %>
+                <%= fa_icon 'user 2x' %>    <%= current_user.full_name if current_user %>   
             </li>
             <% if signed_in? %>
               <li class='nav-item'>

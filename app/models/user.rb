@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :orders
   has_many :items, through: :orders
 
+  has_many :likes
+  has_many :items, through: :likes
+
 
 
   def full_name
@@ -16,6 +19,16 @@ class User < ApplicationRecord
     "Anonymous"
   end
 
+
+  def already_included?(item, user)
+    have = Order.where(item_id: item.id, user_id: user.id)
+    if have.empty?
+      return false
+    else
+      return true
+    end
+
+  end 
 
 
 

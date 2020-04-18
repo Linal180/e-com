@@ -14,9 +14,18 @@
                 <h8 class="card-title">$ <%= item.price %></h8>
             </div>
             <div class="card-footer">
-                <small class="text-muted"><%= item.updated_at %></small>
-            </div>
-            <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', method: :post %>
+                <small class="text-muted"><%= item.updated_at %> 
+                <% if item.already_liked?(item, current_user)%>
+                    <%= link_to '<i class="fa fa-thumbs-down "></i>'.html_safe, remove_like_path(id: item.id), class: "like", method: :delete %></small>
+                <% else %>
+                    <%= link_to '<i class="fa fa-thumbs-up "></i>'.html_safe, add_like_path(id: item.id), class: "like", method: :post %></small>
+                <% end %>    
+                </div>
+            <% if current_user.already_included?(item, current_user) %>
+                <%= link_to 'Remove from Cart', remove_order_path(id: item.id), class: 'btn btn-danger', method: :delete %>
+            <% else %>
+                <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', method: :post %>
+            <% end %>
         </div>
         </div>
         </div>
