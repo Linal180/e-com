@@ -14,6 +14,13 @@ class Order < ApplicationRecord
         return "#{@item.price}"
     end
 
+
+    def get_item_picture(item_id)
+        @item = Item.find(item_id)
+        return "#{@item.picture}"
+    end
+
+
     def get_user_name(order_id)
         @order = Order.find(order_id)
         @user = User.find(@order.user_id)

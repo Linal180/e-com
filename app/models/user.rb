@@ -30,6 +30,11 @@ class User < ApplicationRecord
 
   end 
 
+  def get_orders
+    orders = Order.where(user_id: 2)
+    return orders
+  end 
+
 
 
 
