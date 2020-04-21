@@ -4,7 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-
+  mount_uploader :profile_picture, PictureUploader
+  validate :picture_size
+  validates :profile_picture, presence: true
   has_many :items
   has_many :orders
   has_many :items, through: :orders
@@ -31,9 +33,18 @@ class User < ApplicationRecord
   end 
 
   def get_orders
-    orders = Order.where(user_id: 2)
+    orders = Order.where(user_id: id)
     return orders
   end 
+
+
+  private
+
+  def picture_size
+    if profile_picture.size > 5.megabytes
+      errors.add(:profile_picture, "should be less than 5 MB")
+    end
+  end
 
 
 

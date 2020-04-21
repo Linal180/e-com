@@ -28,7 +28,6 @@ $(document).on('turbolinks:load',(function() {
 
 		$('.js-fullheight').css('height', $(window).height());
 		$(window).resize(function(){
-			alert('2')
 			$('.js-fullheight').css('height', $(window).height());
 		});
 

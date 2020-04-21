@@ -13,15 +13,6 @@ class Item < ApplicationRecord
   
   
 
-  def already_liked?(item, user)
-    like = Like.where(item_id: item.id, user_id: user.id)
-    if like.empty?
-      return false
-    else
-      return true
-    end
-  end
-
   
   
   private

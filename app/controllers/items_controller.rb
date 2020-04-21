@@ -1,10 +1,16 @@
 class ItemsController < ApplicationController
     
-
+    skip_before_action :authenticate_user!, only: [:index, :search]
     before_action :require_same_user, only: [:edit, :destroy, :update]
-    before_acrion :require_admin, only [:create, :destroy, :edit, :update]
+    before_action :require_admin, only: [:new, :edit, :destroy, :update]
+    before_action :set_item, only: [:show]
+  
     def index
         @items = Item.all
+        # respond_to do |format|
+        #   format.html
+        #   format.json
+        # end
     end
 
     def new
@@ -16,7 +22,7 @@ class ItemsController < ApplicationController
     end
 
     def show
-
+      @item = Item.find(params[:id])
     end
 
     def create
@@ -34,6 +40,26 @@ class ItemsController < ApplicationController
     def destroy
     
     end
+
+    def search
+        if params[:item].present?
+          @item = Item.where(name: params[:item])
+          if !@item.empty?
+            respond_to do |format|
+              format.js {render partial: 'items/items-result'} 
+            end
+          else
+            flash[:notice] = 'Please enter a valid name'  
+            redirect_to request.referrer
+          end
+        else
+            flash[:notice] = 'Please enter item name to search'  
+            redirect_to request.referrer
+        end
+
+    
+    end
+  
 
       
   private

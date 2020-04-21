@@ -1,0 +1,26 @@
+<%= render 'layouts/messages/errors' %>
+                
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Image</th>
+      <th scope="col">Item Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <% @item.each do |item| %>
+  <tbody>
+  <tr>
+    <th scope="row">
+      <%= link_to item do %>
+        <%= image_tag item.picture.url, size: '100x80' %>
+      <% end %>
+    </th>
+        <td><%= item.name %></td>
+        <td><%= item.price %></td>
+    </tr>
+    
+  </tbody>
+<% end %>
+</table>

@@ -1,29 +1,37 @@
-<h1>Order Listing</h1>
+<% if @orders.empty? %>
+  <h1>No Order Yet!</h1>
+<% else %>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">Item Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Ordered By</th>
-      <th scope="col">Net Bill</th>
-      <th scope="col">Date</th>
-    </tr>
-  </thead>
-  <% @orders.each do |order| %>
-  <tbody>
-    <tr>
-      <th scope="row"><%= order.id %></th>
-      <td><%= order.get_item_name(order.item_id)%></td>
-      <td><%= order.get_item_price(order.item_id)%></td>
-      <td>1</td>
-      <td><%= order.get_user_name(order.id)%></td>
-      <td><%= order.get_item_price(order.item_id)%></td>
-      <td><%= order.created_at.to_date.strftime('%a, %e %b %y') %></td>
-    </tr>
-    
-  </tbody>
-  <% end %>
-</table>
+  <h1>Order Listing</h1>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Ordered By</th>
+        <th scope="col">Net Bill</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <% @orders.each do |order| %>
+    <tbody>
+      <tr>
+        <th scope="row">
+          <%= link_to get_item(order.item_id) do %>
+            <%= image_tag get_item_picture(order.item_id), size: '100x80' %></th>
+          <% end %>
+        <td><%= get_item_name(order.item_id)%></td>
+        <td><%= get_item_price(order.item_id)%></td>
+        <td>1</td>
+        <td><%= get_user_name(order.id)%></td>
+        <td><%= get_item_price(order.item_id)%></td>
+        <td><%= order.created_at.to_date.strftime('%a, %e %b %y') %></td>
+      </tr>
+      
+    </tbody>
+    <% end %>
+  </table>
+<% end %>

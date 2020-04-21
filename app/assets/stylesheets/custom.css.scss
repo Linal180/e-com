@@ -17,11 +17,17 @@
     
 }
 
+.my_cart_button{
+    padding-top: 10px;
+}
 .my_info{
-    padding-right: 5px;
+    padding-right: 15px;
+    
+    float: right;
 }
 .top{
     width: 170px;
+    height: 38px;
 }
 //------------------------SHOPING CART
 
@@ -220,4 +226,8 @@ ul {
 //----------------------------------
 .my_cart{
     width: auto;
+}
+
+.profile-picture{
+    border-radius: 50%;
 }

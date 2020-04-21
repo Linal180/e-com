@@ -1,5 +1,10 @@
 class LikesController < ApplicationController
 
+    def index
+        @favorites = Like.where(user: current_user)
+    end
+
+
     def create
         @liked_item = Like.new(user_id: current_user.id, item_id: params[:id])
         if @liked_item && @liked_item.save
@@ -7,7 +12,7 @@ class LikesController < ApplicationController
         else
             flash[:alert] = 'Somthing went wrong' 
         end
-        redirect_to items_path
+        redirect_back fallback_location: items_path
 
     end
 
@@ -18,7 +23,7 @@ class LikesController < ApplicationController
         else
             flash[:alert] = 'Something went wrong'
         end
-        redirect_to items_path
+        redirect_back fallback_location: items_path
 
     
     end

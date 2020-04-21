@@ -8,6 +8,13 @@
     <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
   </div>
 
+
+  <div class="form-group">
+    <%= f.label :profile_picture %>
+    <%= f.file_field :profile_picture, accept: 'image/jpeg , image/gif, image/png', autofocus: true, class: 'form-control' %>
+  </div>
+
+
   <div class="form-group">
     <%= f.label :password %>
     <%= f.password_field :password, autocomplete: 'new-password', class: 'form-control' %>
