@@ -3,15 +3,20 @@ class OrdersController < ApplicationController
     before_action :authenticate_user!
     before_action :require_same_user, only: [:destroy]
     def index
-        @orders = Order.all
+        @orders = Order.where(user_id: current_user.id)
     end
 
-    def create 
-        @order = Order.new(user_id: current_user.id, item_id: params[:item_id])
-        if @order && @order.save
-            flash[:notice] = 'Added to cart successfully'
+    def create
+        @item = Item.find(params[:item_id])
+        if current_user.id != @item.user_id 
+            @order = Order.new(user_id: current_user.id, item_id: params[:item_id])
+            if @order && @order.save
+                flash[:notice] = 'Added to cart successfully!'
+            else
+                flash[:alert] = 'Somthing went wrong!' 
+            end
         else
-            flash[:alert] = 'Somthing went wrong' 
+            flash[:alert] = "You can't buy you own product!"
         end
         redirect_back fallback_location: items_path
     end
@@ -19,9 +24,9 @@ class OrdersController < ApplicationController
     def destroy
         order = Order.where(item_id: params[:id], user_id: current_user.id).first
         if order && order.destroy
-            flash[:notice] = "Successfully removed from cart"
+            flash[:notice] = "Successfully removed from cart!"
         else
-            flash[:alert] = 'Something went wrong'
+            flash[:alert] = 'Something went wrong!'
         end
         redirect_back fallback_location: items_path
     end

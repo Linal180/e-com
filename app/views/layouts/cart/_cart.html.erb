@@ -29,7 +29,7 @@
                                             <td class="cart_item_text"><%= get_item_price(order.item_id) %></td>
                                             <td class="cart_item_text">1</td>
                                             <td class="cart_item_text"><%= get_item_price(order.item_id) %></td>
-                                            <td class="cart_item_text"><%= link_to '<i class="fa fa-window-close"></i>'.html_safe, remove_order_path(id: order.item_id), class: '', method: :delete %></td>
+                                            <td class="cart_item_text"><%= link_to '<i class="fa fa-window-close"></i>'.html_safe, remove_order_path(id: order.item_id), remote: true, class: '', method: :delete %></td>
                                         </tr>
                                     </tbody>
                                     <% end %>

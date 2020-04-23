@@ -12,9 +12,6 @@ class Item < ApplicationRecord
   validate :picture_size
   
   
-
-  
-  
   private
 
   def picture_size

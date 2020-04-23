@@ -6,7 +6,9 @@ class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_user!
-    helper_method :get_item_name, :get_item_picture, :get_item_price, :get_user_name, :get_item, :already_liked?, :get_likes_count
+    after_action :check_role
+
+    helper_method :get_item_name, :get_item_picture, :get_item_price, :get_user_name, :get_item, :already_liked?, :get_likes_count, :get_added_by, :get_user_full_name, :get_user_orders, :get_user_likes
 
     def configure_permitted_parameters
         devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :profile_picture])
@@ -17,6 +19,17 @@ class ApplicationController < ActionController::Base
         if current_user.admin == false 
             flash[:notice] = 'This action is forbidden for you!'
             redirect_to items_path
+        end
+    end
+
+
+    def check_role
+        if signed_in?
+            if current_user.admin == true
+                
+            else
+                
+            end
         end
     end
 
@@ -66,7 +79,29 @@ class ApplicationController < ActionController::Base
         likes = Like.where(item_id: item_id)
         return likes.count
     end
-      
+
+    def get_added_by(item_id)
+        @item = Item.find(item_id)
+        @adder = User.where(id: @item.user_id).first
+        return "#{@adder.first_name} #{@adder.last_name}"
+    end
+
+    def get_user_full_name(id)
+        @user = User.find(id)
+        return "#{@user.first_name} #{@user.last_name}"
+    end
+    
+    def get_user_orders(id)
+        @orders = Order.where(user_id: id)
+        return @orders.length
+    end
+    
+    def get_user_likes(id)
+        @likes = Like.where(user_id: id)
+        return @likes.length
+    end
+    
+
 
     private
   

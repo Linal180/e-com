@@ -22,21 +22,21 @@
                                     <h5 class="card-title"><%= item.name %></h5>
                                     <h8 class="card-title">$ <%= item.price %></h8>
                                 </div>
-                                <div class="card-footer">
-                                    <small class="text-muted"><%= item.updated_at.to_date.strftime('%a, %e %b %y') %> 
+                                <div class="card-footer" >
+                                    <small class="text-muted"><%= item.updated_at.to_date.strftime('%a, %e %b %y') %></small>
                                     <% if signed_in? %>
                                         <% if already_liked?(item, current_user)%>
-                                            <%= link_to '<i class="fa fa-thumbs-down "></i>'.html_safe, remove_like_path(id: item.id), class: "like", method: :delete %></small>
+                                            <%= link_to 'Liked <i class="fa fa-thumbs-down "></i>'.html_safe, remove_like_path(id: item.id), :id => 'my-link', remote: true, class: "like dontscroll", method: :delete %></a>
                                         <% else %>
-                                            <%= link_to '<i class="fa fa-thumbs-up "></i>'.html_safe, add_like_path(id: item.id), class: "like", method: :post %></small>
+                                            <%= link_to 'Like <i class="fa fa-thumbs-up "></i>'.html_safe, add_like_path(id: item.id), :id => 'my-link', remote: true, class: "like", method: :post %></small>
                                         <% end %>
                                     <% end %>    
                                 </div>
                                 <% if signed_in? %>
                                     <% if current_user.already_included?(item, current_user) %>
-                                        <%= link_to 'Remove from Cart', remove_order_path(id: item.id), class: 'btn btn-danger', method: :delete %>
+                                        <%= link_to 'Remove from Cart', remove_order_path(id: item.id), class: 'btn btn-danger', remote: true, method: :delete %>
                                     <% else %>
-                                        <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary',remote: true, method: :post %>
+                                        <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', remote: true, method: :post %>
                                     <% end %>
                                 <% end %>
                             </div>
@@ -48,3 +48,10 @@
         <% end %>
     <% end %>
     
+
+
+<script>
+function scrollWin() {
+  window.scrollTo();
+}
+</script>

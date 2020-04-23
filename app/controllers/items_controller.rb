@@ -1,9 +1,9 @@
 class ItemsController < ApplicationController
     
     skip_before_action :authenticate_user!, only: [:index, :search]
+    before_action :set_item, only: [:show, :destroy, :require_same_user]
     before_action :require_same_user, only: [:edit, :destroy, :update]
-    before_action :require_admin, only: [:new, :edit, :destroy, :update]
-    before_action :set_item, only: [:show]
+    before_action :require_admin, only: [:new, :create, :edit, :destroy, :update]
   
     def index
         @items = Item.all
@@ -27,8 +27,8 @@ class ItemsController < ApplicationController
 
     def create
         @item = Item.new(item_params)
-        @item.user = current_user
-        if @item && @item.save
+        @item = current_user
+        if @item.save
             flash[:notice] = "Item was created successfully"
             redirect_to items_path
         else
@@ -38,6 +38,16 @@ class ItemsController < ApplicationController
     end
 
     def destroy
+      @orders = Order.where(item_id: @item.id) 
+      @likes = Like..where(item_id: @item.id)
+      if @item.destroy
+
+        flash[:notice] = "Item deleted successfully"
+      else
+        flash[:alert] = "Something went wrong!"
+      end 
+      redirect_back fallback_location: items_path
+
     
     end
 
@@ -53,7 +63,8 @@ class ItemsController < ApplicationController
             redirect_to request.referrer
           end
         else
-            flash[:notice] = 'Please enter item name to search'  
+          alert("empty")
+            flash.now[:alert] = 'Please enter item name to search'  
             redirect_to request.referrer
         end
 
@@ -69,16 +80,20 @@ class ItemsController < ApplicationController
   end
   # Only allow a list of trusted parameters through.
   def item_params
-    
     params.require(:item).permit(:name, :price, :picture)
   end
 
 
   def require_same_user
-      order = Order.where(item_id: params[:id], user_id: current_user.id).first
-      if current_user != @item.user
-        flash[:notice] = "This action is forbidden for you!"
-        redirect_to root_path
+      @item = Item.find(params[:id])
+      if @item.present?
+        if current_user.admin != true
+          flash[:notice] = "This action is forbidden for you!"
+          redirect_to root_path
+        end
+      else
+        flash[:notice] = "Item not found!"
+        redirect_to items_path
       end
   end
 

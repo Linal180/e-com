@@ -1,0 +1,62 @@
+<div class="container">
+    <h1>All Users</h1>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+        <th scope="col">User ID</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Orders</th>
+        <th scope="col">Likes</th>
+        <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <% @all_users.each do |user| %>
+    <tbody>
+    <tr>
+            <th scope="row"><%= user.id%></th>
+            <td><%= get_user_full_name(user.id) %></td>
+            <td><%= get_user_orders(user.id) %></td>
+            <td><%= get_user_likes(user.id) %></td>
+            <td>
+                <%= link_to "Make ADMIN", make_admin_path(id: user.id), remote: true, class: "btn btn-primary", method: :post %>
+                <%= link_to "Block User", delete_user_path(id: user.id), remote: true, class: "btn btn-danger" , method: :delete %>
+            </td>
+            
+        </tr>
+        
+    </tbody>
+    <% end %>
+    </table>
+
+    <h1>Admins</h1>
+    
+    <table class="table table-striped">
+    <thead>
+        <tr>
+        <th scope="col">User ID</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Orders</th>
+        <th scope="col">Likes</th>
+        <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <% @admins.each do |admin| %>
+    <tbody>
+    <tr>
+            <th scope="row"><%= admin.id%></th>
+            <td><%= get_user_full_name(admin.id) %></td>
+            <td><%= get_user_orders(admin.id) %></td>
+            <td><%= get_user_likes(admin.id) %></td>
+            <td>
+                <% if current_user != admin %>
+                    <%= link_to "Make User", undo_admin_path(id: admin.id), remote: true, class: "btn btn-danger", method: :post %>
+                <% end %>
+            </td>
+            
+        </tr>
+        
+    </tbody>
+    <% end %>
+    </table>
+
+</div>

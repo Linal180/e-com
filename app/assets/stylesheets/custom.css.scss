@@ -1,5 +1,7 @@
 @import 'bootstrap/dist/css/bootstrap';
 
+
+
 .navbar-brand{
     font-size: 2.3rem;
 }
@@ -231,3 +233,19 @@ ul {
 .profile-picture{
     border-radius: 50%;
 }
+
+// --------------------------------------
+
+.stop-scrolling {
+    overflow: hidden;
+    position: fixed;
+  }
+
+  //=============
+  .admin-profile{
+    position: absolute;
+    right: 100px;
+    width: 150px;
+    height: 20px;
+    padding-top: 0px;
+  }

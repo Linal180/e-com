@@ -11,60 +11,100 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <% if signed_in? %>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item <%= 'active' if request.path == items_path %>">
-                <%= link_to "Home", items_path, class:'nav-link'  %>
-            </li>
-            <li class="nav-item <%= 'active' if request.path == orders_path %>">
-                <%= link_to 'Orders', orders_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item <%= 'active' if request.path == favorites_path %>">
-                <%= link_to 'Favorites', favorites_path, class: "nav-link" %>
-            </li>
+        <% if signed_in? && (current_user.admin != true || request.path == items_path) %>
+            <% if signed_in?  %>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item <%= 'active' if request.path == items_path %>">
+                                <%= link_to "Home", items_path, class:'nav-link'  %>
+                            </li>
+                            <li class="nav-item <%= 'active' if request.path == orders_path %>">
+                                <%= link_to 'Orders', orders_path, class: "nav-link" %>
+                            </li>
+                            <li class="nav-item <%= 'active' if request.path == favorites_path %>">
+                                <%= link_to 'Favorites', favorites_path, class: "nav-link" %>
+                            </li>                        
+                        </ul>
+                        <%= render 'search/search-component' %>
 
-            
-            </ul>
-            <%= render 'search/search-component' %>
+                        
 
-            
+                        <ul class="navbar-nav ml-auto class="form-inline my-2 my-lg-0"">
+                            
+                                <!-- Cart Button -->
+                            <div class="btn-group my_info my_cart_button">
+                                <button type="button" class="btn btn btn-info top " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-shopping-cart "> (<%= current_user.get_orders().count %> )</i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <%= render "layouts/cart/cart" %>
+                                </div>
+                            </div>
+                            <li class="nav-item dropdown my_info">
+                                <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <% if current_user.profile_picture.url %>
+                                        <%= image_tag current_user.profile_picture.url, size: '50x50', class: "profile-picture" %>
+                                    <% else %>
+                                        <%= fa_icon 'user 2x' %>
+                                    <% end %>    
+                                    <%= current_user.full_name if current_user %>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <%= link_to 'Edit Profile', edit_user_registration_path, class: 'dropdown-item' %>
+                                <div class="dropdown-divider"></div>
+                                    <% if signed_in? %>
+                                        <%= link_to "Logout", destroy_user_session_path, class: 'btn btn btn-danger logout-button dropdown-item', method: :delete %>
+                                    <% end %>
+                                
+                                </div>
+                        </li>
+                        </ul>
 
-            <ul class="navbar-nav ml-auto class="form-inline my-2 my-lg-0"">
-                
-                    <!-- Cart Button -->
-                <div class="btn-group my_info my_cart_button">
-                    <button type="button" class="btn btn btn-info top " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-shopping-cart "> (<%= current_user.get_orders().count %>)</i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <%= render "layouts/cart/cart" %>
+                    </ul>
                     </div>
-                </div>
-                <li class="nav-item dropdown my_info">
-                    <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <% if current_user.profile_picture.url %>
-                            <%= image_tag current_user.profile_picture.url, size: '50x50', class: "profile-picture" %>
-                        <% else %>
-                            <%= fa_icon 'user 2x' %>
-                        <% end %>    
-                        <%= current_user.full_name if current_user %>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <%= link_to 'Edit Profile', edit_user_registration_path, class: 'dropdown-item' %>
-                    <div class="dropdown-divider"></div>
-                        <% if signed_in? %>
-                            <%= link_to "Logout", destroy_user_session_path, class: 'btn btn btn-danger logout-button dropdown-item', method: :delete %>
-                        <% end %>
+            <% else %>
+                    <%= link_to "Login", new_user_session_path, class: 'btn btn btn-success logout-button' %>
+            <% end %>
+
+        <% else  %>
+            <% if signed_in? %>
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
                     
-                    </div>
-            </li>
-            </ul>
+                    <li class="nav-item <%= 'active' if request.path == items_path %>">
+                        <%= link_to "Home", admin_path, class:'nav-link'  %>
+                    </li>
+                    <li class="nav-item <%= 'active' if request.path == all_orders_path %>">
+                        <%= link_to 'Orders', all_orders_path, class: "nav-link" %>
+                    </li>
 
-        </ul>
-        </div>
-        <% else %>
-                <%= link_to "Login", new_user_session_path, class: 'btn btn btn-success logout-button' %>
+
+                    <li class="nav-item <%= 'active' if request.path == items_path %>">
+                        <%= link_to "User View", items_path, class:'nav-link'  %>
+                    </li>
+                
+                    <li class="nav-item dropdown my_info admin-profile">
+                        <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <% if current_user.profile_picture.url %>
+                                <%= image_tag current_user.profile_picture.url, size: '50x50', class: "profile-picture" %>
+                            <% else %>
+                                <%= fa_icon 'user 2x' %>
+                            <% end %>    
+                            <%= current_user.full_name if current_user %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <%= link_to 'Edit Profile', edit_user_registration_path, class: 'dropdown-item' %>
+                        <div class="dropdown-divider"></div>
+                            <% if signed_in? %>
+                                <%= link_to "Logout", destroy_user_session_path, class: 'btn btn btn-danger logout-button dropdown-item', method: :delete %>
+                            <% end %>
+                        
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <% end %>
         <% end %>
+
     </div>
 </nav>

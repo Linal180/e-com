@@ -21,7 +21,12 @@ import "bootstrap"
 import JQuery from 'jquery';
 window.$ = window.JQuery = JQuery;
 
+
+
+	
 $(document).on('turbolinks:load',(function() {
+	
+	$('#fade-out-target').fadeOut(4000);	
 	"use strict";
 
 	var fullHeight = function() {
@@ -38,4 +43,6 @@ $(document).on('turbolinks:load',(function() {
 		$('#sidebar').toggleClass('active');
   });
 
+  
+  
 }))
