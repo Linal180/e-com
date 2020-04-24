@@ -1,0 +1,35 @@
+<%= render 'layouts/messages/errors'%>        
+
+<% if @item.present? %>
+<h5 align="center">Search Results</h5>  
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Image</th>
+      <th scope="col">Item Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Added by</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <% @item.each do |item| %>
+  <tbody>
+  <tr>
+    <th scope="row">
+      <%= link_to item do %>
+        <%= image_tag item.picture.url, size: '100x80' %>
+      <% end %>
+    </th>
+        <td><%= item.name %></td>
+        <td><%= item.price %></td>
+        <td><%= get_added_by(item.id) %></td>
+        <td>
+            <%= link_to "Edit", edit_item_path(item.id), class: "btn btn-primary" %>
+            <%= link_to "Delete", destroy_item_path(id: item.id) , class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure?"}%>
+        </td>
+        
+    </tr>
+    
+  </tbody>
+<% end %>
+<% end  %>

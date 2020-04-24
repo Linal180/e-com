@@ -3,8 +3,8 @@ class ItemsController < ApplicationController
     rescue_from ActionView::MissingTemplate, :with => :not_found
 
     skip_before_action :authenticate_user!, only: [:index, :search]
-    before_action :set_item, only: [:show, :destroy, :require_same_user]
-    before_action :require_admin, only: [:new, :create, :edit, :destroy, :update]
+    before_action :set_item, only: [:show, :destroy, :update, :require_same_user]
+    before_action :require_admin, only: [:new, :create, :edit, :destroy, :update, :admin_search]
     before_action :require_same_user, only: [:edit, :destroy, :update]
 
     def index
@@ -39,24 +39,30 @@ class ItemsController < ApplicationController
         end
     end
 
-    def destroy
-      @orders = Order.where(item_id: @item.id) 
-      @likes = Like..where(item_id: @item.id)
-      if @item.destroy
 
-        flash[:notice] = "Item deleted successfully"
+    def update
+      if @item.update(item_params)
+        flash[:notice] = "Item updated successfully!"
+        redirect_to @item
+    else
+        render 'edit'
+    end
+
+    
+    end
+    def destroy
+      if @item.destroy 
+        flash[:notice] = "Item deleted successfully!"
       else
         flash[:alert] = "Something went wrong!"
       end 
       redirect_back fallback_location: items_path
 
-    
     end
 
     def search
-        if params[:item].present?
-            
-            @item = Item.where(name: params[:item])
+      if params[:item].present?
+        @item = Item.search(params[:item])
             if !@item.empty?
               respond_to do |format|
                 format.js {render partial: 'items/items-result'} 
@@ -76,10 +82,32 @@ class ItemsController < ApplicationController
             format.js {render partial: 'items/items-result'}
           end
         end
-
-    
     end
-  
+
+    def admin_search
+      if params[:item].present?
+        @item = Item.search(params[:item])
+            if !@item.empty?
+              respond_to do |format|
+                format.js {render partial: 'pages/search/items-result'} 
+              end
+            else
+              respond_to do |format|
+                flash.now[:alert] = "No item found"
+                format.js {render partial: 'pages/search/items-result'} 
+              end
+              # flash[:notice] = 'Please enter a valid name'  
+              # redirect_to request.referrer
+            end
+
+        else
+          respond_to do |format|
+            flash.now[:alert] = "Enter somthing to search"
+            format.js {render partial: 'pages/search/items-result'} 
+          end
+        end
+    end
+
 
       
   private

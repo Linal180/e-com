@@ -1,0 +1,31 @@
+<%= render 'layouts/messages/errors'%>              
+
+<% if @user.present? %>
+
+    <h5 align="center">Results</h5>    
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Orders</th>
+            <th scope="col">Likes</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <% @user.each do |user| %>
+        <tbody>
+        <tr>
+                <th scope="row"><%= user.id%></th>
+                <td><%= get_user_full_name(user.id) %></td>
+                <td><%= get_user_orders(user.id) %></td>
+                <td><%= get_user_likes(user.id) %></td>
+                <td>
+                    <%= link_to "Make ADMIN", make_admin_path(id: user.id), remote: true, class: "btn btn-primary", method: :post%>
+                </td>
+        </tr>
+            
+        </tbody>
+    <% end %>
+    </table>
+<% end %>

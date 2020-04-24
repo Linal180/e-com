@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
 
     skip_before_action :authenticate_user!, only: [:welcome]
-    before_action :require_admin, only: [:admin, :all_items, :all_users, :make_admin, :delete_user]
+    before_action :require_admin, only: [:admin, :all_items, :all_users, :make_admin]
 
 
     def dashboard
@@ -20,6 +20,7 @@ class PagesController < ApplicationController
 
     def show
     end
+
 
     def all_users
         @all_users = User.where.not(id: current_user.id, admin: true)
@@ -58,11 +59,6 @@ class PagesController < ApplicationController
 
     def all_orders
         @orders = Order.all
-    end
-
-    def delete_user
-        @user = User.find(params[:id])
-       
     end
 
 end

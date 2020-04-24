@@ -2,12 +2,12 @@ Rails.application.routes.draw do
   
 
   devise_for :users
-  # if .admin == true
-  #   root "items#index"
-  # end
+  get "search_user", to: "users#search_user"
+
   
   resources :items
   delete 'destroy_item', to: 'items#destroy', as: 'destroy_item'
+  get "admin_search", to: "items#admin_search"
 
   resources :orders
   root 'pages#dashboard'
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   delete "delete_user", to: "pages#delete_user"
   post "undo_admin", to: "pages#undo_admin"
   get "all_orders", to: "pages#all_orders"
+
   get '*a' => "items#index",
   :constraints => { :not_found => /.*/ }
 end

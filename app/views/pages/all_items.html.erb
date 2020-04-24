@@ -1,31 +1,59 @@
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Image</th>
-      <th scope="col">Item Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Added by</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <% @all_items.each do |item| %>
-  <tbody>
-  <tr>
-    <th scope="row">
-      <%= link_to item do %>
-        <%= image_tag item.picture.url, size: '100x80' %>
-      <% end %>
-    </th>
-        <td><%= item.name %></td>
-        <td><%= item.price %></td>
-        <td><%= get_added_by(item.id) %></td>
-        <td>
-            <%= link_to "Show", item, class: "btn btn-primary" %>
-            <%= link_to "Delete", destroy_item_path(id: item.id) , class: "btn btn-danger", method: :delete %>
-        </td>
-        
-    </tr>
-    
-  </tbody>
+<% if @all_items.present? %>
+  
+
+<h3>Search Item</h3>
+<%= form_tag admin_search_path, remote: true, method: :get do %>
+  <div class="form group row">
+      <div class="col-sm-9 no-right-padding">
+          <%= text_field_tag :item, params[:item], placeholder: 'Search..', autofocus: true, class: 'form-control form-control-lg' %>
+      </div>
+      <div class="col-sm-3 no-left-padding">
+          <%= button_tag type: :submit, class: 'btn btn-success' do %>
+              <%= fa_icon 'search 2x' %>
+          <% end %>
+      
+      </div>
+  </div>
 <% end %>
-</table>
+
+
+<div id="itemsResult">
+
+
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Item Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Added by</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <% @all_items.each do |item| %>
+      <tbody>
+      <tr>
+        <th scope="row">
+          <%= link_to item do %>
+            <%= image_tag item.picture.url, size: '100x80' %>
+          <% end %>
+        </th>
+            <td><%= item.name %></td>
+            <td><%= item.price %></td>
+            <td><%= get_added_by(item.id) %></td>
+            <td>
+                <%= link_to "Edit", edit_item_path(item.id), class: "btn btn-primary" %>
+                <%= link_to "Delete", destroy_item_path(id: item.id) , class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure?"}%>
+            </td>
+            
+        </tr>
+        
+      </tbody>
+    <% end %>
+    </table>  
+</div>
+
+<% else %>
+    <h5>No Item Added Yet!</h5>
+    <%= link_to "Add New Item", new_item_path, class: "btn btn-primary" %>
+<% end %>
