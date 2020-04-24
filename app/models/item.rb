@@ -8,7 +8,8 @@ class Item < ApplicationRecord
   has_many :users, through: :likes
 
   mount_uploader :picture, PictureUploader
-  validates :name, :picture, presence: true
+  validates :name,  presence: true, uniqueness: true
+  validates :price, :picture, presence: true
   validate :picture_size
   
   

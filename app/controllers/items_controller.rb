@@ -1,10 +1,12 @@
 class ItemsController < ApplicationController
     
+    rescue_from ActionView::MissingTemplate, :with => :not_found
+
     skip_before_action :authenticate_user!, only: [:index, :search]
     before_action :set_item, only: [:show, :destroy, :require_same_user]
-    before_action :require_same_user, only: [:edit, :destroy, :update]
     before_action :require_admin, only: [:new, :create, :edit, :destroy, :update]
-  
+    before_action :require_same_user, only: [:edit, :destroy, :update]
+
     def index
         @items = Item.all
         # respond_to do |format|
@@ -53,19 +55,26 @@ class ItemsController < ApplicationController
 
     def search
         if params[:item].present?
-          @item = Item.where(name: params[:item])
-          if !@item.empty?
-            respond_to do |format|
-              format.js {render partial: 'items/items-result'} 
+            
+            @item = Item.where(name: params[:item])
+            if !@item.empty?
+              respond_to do |format|
+                format.js {render partial: 'items/items-result'} 
+              end
+            else
+              respond_to do |format|
+                flash.now[:alert] = "No item found"
+                format.js {render partial: 'items/items-result'}
+              end
+              # flash[:notice] = 'Please enter a valid name'  
+              # redirect_to request.referrer
             end
-          else
-            flash[:notice] = 'Please enter a valid name'  
-            redirect_to request.referrer
-          end
+
         else
-          alert("empty")
-            flash.now[:alert] = 'Please enter item name to search'  
-            redirect_to request.referrer
+          respond_to do |format|
+            flash.now[:alert] = "Enter somthing to search"
+            format.js {render partial: 'items/items-result'}
+          end
         end
 
     
@@ -85,7 +94,7 @@ class ItemsController < ApplicationController
 
 
   def require_same_user
-      @item = Item.find(params[:id])
+      @item = Item.find(params[:id]) rescue not_found
       if @item.present?
         if current_user.admin != true
           flash[:notice] = "This action is forbidden for you!"
@@ -95,6 +104,11 @@ class ItemsController < ApplicationController
         flash[:notice] = "Item not found!"
         redirect_to items_path
       end
+  end
+
+  def not_found
+    flash[:alert] = "Something is missing!"
+    redirect_to root_path
   end
 
 

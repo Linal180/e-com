@@ -1,12 +1,14 @@
 class LikesController < ApplicationController
 
+    rescue_from ActionView::MissingTemplate, :with => :not_found
+
     def index
         @favorites = Like.where(user: current_user)
     end
 
 
     def create
-        @item = Item.find(params[:id])
+        @item = Item.find(params[:id]) rescue not_found
         if @item.user_id != current_user.id 
             @liked_item = Like.new(user_id: current_user.id, item_id: params[:id])
             if @liked_item && @liked_item.save
@@ -32,4 +34,13 @@ class LikesController < ApplicationController
 
     
     end
+
+    private
+
+    
+    def not_found
+        flash[:alert] = "Something is missing!"
+        redirect_to root_path
+      end
+    
 end

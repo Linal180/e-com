@@ -1,55 +1,54 @@
-<h1>Items Listing</h1>
 
-    <% if @items.empty? %>
-        <div class="containe">
-            <h1 align="center">
+
+<div class="containe">
+    <h1 class="title">Items Listing</h1>
+
+    <% if !@items.present? %>
+            <h4 align="center">
                 No item Available!
-            </h1>
-        </div>
+            </h4>
     <% else %>
-    <div class="container">
     
     <div class="card-deck">
-    <% @items.each do |item| %>
-        <div class="row">
-        <div class="col-12">
-        <div class="item">
-        <div class="card item">
-                        
-                                <%= link_to item do %>
-                                    <%= image_tag item.picture.url, size: '276x180', class: "card-img-top" %>
-                                <% end %>
-                                <div class="card-body">
-                                    <h5 class="card-title"><%= item.name %></h5>
-                                    <h8 class="card-title">$ <%= item.price %></h8>
-                                </div>
-                                <div class="card-footer" >
-                                    <small class="text-muted"><%= item.updated_at.to_date.strftime('%a, %e %b %y') %></small>
-                                    <% if signed_in? %>
-                                        <% if already_liked?(item, current_user)%>
-                                            <%= link_to 'Liked <i class="fa fa-thumbs-down "></i>'.html_safe, remove_like_path(id: item.id), :id => 'my-link', remote: true, class: "like dontscroll", method: :delete %></a>
-                                        <% else %>
-                                            <%= link_to 'Like <i class="fa fa-thumbs-up "></i>'.html_safe, add_like_path(id: item.id), :id => 'my-link', remote: true, class: "like", method: :post %></small>
-                                        <% end %>
-                                    <% end %>    
-                                </div>
+        <% @items.each do |item| %>
+            <div class="row">
+                <div class="col-12">
+                    <div class="item">
+                        <div class="card item">
+                            
+                            <%= link_to item do %>
+                                <%= image_tag item.picture.url, size: '276x180', class: "card-img-top" %>
+                            <% end %>
+                            <div class="card-body">
+                                <h5 class="card-title"><%= item.name %></h5>
+                                <h8 class="card-title">$ <%= item.price %></h8>
+                            </div>
+                            <div class="card-footer" >
+                                <small class="text-muted"><%= item.updated_at.to_date.strftime('%a, %e %b %y') %></small>
                                 <% if signed_in? %>
-                                    <% if current_user.already_included?(item, current_user) %>
-                                        <%= link_to 'Remove from Cart', remove_order_path(id: item.id), class: 'btn btn-danger', remote: true, method: :delete %>
+                                    <% if already_liked?(item, current_user)%>
+                                        <%= link_to 'Liked <i class="fa fa-thumbs-down "></i>'.html_safe, remove_like_path(id: item.id), :id => 'my-link', remote: true, class: "like dontscroll", method: :delete %></a>
                                     <% else %>
-                                        <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', remote: true, method: :post %>
+                                        <%= link_to 'Like <i class="fa fa-thumbs-up "></i>'.html_safe, add_like_path(id: item.id), :id => 'my-link', remote: true, class: "like", method: :post %></small>
                                     <% end %>
+                                <% end %>    
+                            </div>
+                            <% if signed_in? %>
+                                <% if current_user.already_included?(item, current_user) %>
+                                    <%= link_to 'Remove from Cart', remove_order_path(id: item.id), class: 'btn btn-danger', remote: true, method: :delete %>
+                                <% else %>
+                                    <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', remote: true, method: :post %>
                                 <% end %>
-                                </div>
-                                </div>
-                                
-                                </div>
-                                </div>
-                                <% end %>
+                            <% end %>
+                        </div>
+                    </div>
                 </div>
             </div>
-        
-    <% end %>
+        <% end %>
+    </div>
+                
+<% end %>
+</div>
     
 
 

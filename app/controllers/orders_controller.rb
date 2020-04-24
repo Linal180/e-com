@@ -1,5 +1,8 @@
 class OrdersController < ApplicationController
 
+
+    rescue_from ActionView::MissingTemplate, :with => :not_found
+
     before_action :authenticate_user!
     before_action :require_same_user, only: [:destroy]
     def index
@@ -7,7 +10,7 @@ class OrdersController < ApplicationController
     end
 
     def create
-        @item = Item.find(params[:item_id])
+        @item = Item.find(params[:item_id]) rescue not_found
         if current_user.id != @item.user_id 
             @order = Order.new(user_id: current_user.id, item_id: params[:item_id])
             if @order && @order.save
@@ -42,6 +45,13 @@ class OrdersController < ApplicationController
           redirect_to root_path
         end
     end
+
+    
+    def not_found
+        flash[:alert] = "Something is missing!"
+        redirect_to root_path
+      end
+    
 
 end
 

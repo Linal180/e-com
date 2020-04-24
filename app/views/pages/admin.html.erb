@@ -2,6 +2,41 @@
 
 
 
-<%= link_to "View All Items", all_items_path, class: "btn btn btn-lg btn-primary" %>
-<%= link_to "View All Users", all_users_path,  class: "btn btn btn-lg btn-primary" %>
 
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-eye 2x"></i>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <%= link_to "View All Items", all_items_path, class: "btn btn-primary" %>
+
+   </div>
+</div>
+
+
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-street-view 2x"></i>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <%= link_to "View All Users", all_users_path,  class: "btn btn-primary" %>
+  </div>
+</div>
+
+
+
+
+<div class="card">
+  <div class="card-header">
+  <i class="fa fa-plus-circle"></i>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <%= link_to "Add New Item", new_item_path, class: "btn btn-primary" %>
+  </div>
+</div>
