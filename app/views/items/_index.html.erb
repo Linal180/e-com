@@ -7,14 +7,15 @@
             </h1>
         </div>
     <% else %>
-        <% @items.each do |item| %>
-            <div class="container">
-
-                <div class="card-deck">
-                    <div class="row">
-                        <div class="col">
+    <div class="container">
+    
+    <div class="card-deck">
+    <% @items.each do |item| %>
+        <div class="row">
+        <div class="col-12">
+        <div class="item">
+        <div class="card item">
                         
-                            <div class="card item">
                                 <%= link_to item do %>
                                     <%= image_tag item.picture.url, size: '276x180', class: "card-img-top" %>
                                 <% end %>
@@ -39,13 +40,15 @@
                                         <%= link_to 'Add To Cart', add_order_path(item_id: item.id), class: 'btn btn-primary', remote: true, method: :post %>
                                     <% end %>
                                 <% end %>
-                            </div>
-                        </div>
-                    </div>
+                                </div>
+                                </div>
+                                
+                                </div>
+                                </div>
+                                <% end %>
                 </div>
             </div>
         
-        <% end %>
     <% end %>
     
 

@@ -2,7 +2,7 @@ class Item < ApplicationRecord
 
   belongs_to :user
   has_many :orders
-  has_many :user, through: :orders
+  has_many :users, through: :orders
 
   has_many :likes
   has_many :users, through: :likes

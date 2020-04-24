@@ -11,6 +11,13 @@
 
   <body>
     <%= render 'layouts/navigation/navigation' %>
-    <%= render 'layouts/navigation/sidebar' %>
+    <div class="container">
+      <div id="fade-out-target" >
+        <%= render 'layouts/messages/errors'%>
+      </div>
+      <div id="items-result">
+        <%= yield %>
+      </div>        
+		</div>
   </body>
 </html>
